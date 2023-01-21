@@ -26,8 +26,8 @@ public class Checkout {
     }
 
     public void changeQuantity(String name, int quantity) {
-        double price = catalog.getPrice(name);
-        if (price != 0) {
+        System.out.println(cart.toString());
+        if (cart.containsKey(name)) {
             cart.put(name, quantity);
         }
     }
@@ -41,7 +41,11 @@ public class Checkout {
     }
 
     public int getTotalItems() {
-        return cart.size();
+        int total = 0;
+        for (String name : cart.keySet()) {
+            total += cart.get(name);
+        }
+        return total;
     }
 
     public double getTotalPrice() {
@@ -56,6 +60,9 @@ public class Checkout {
     }
 
     public int getQuantity(String name) {
+        if (!cart.containsKey(name)) {
+            return 0;
+        }
         return cart.get(name);
     }
 }

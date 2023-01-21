@@ -17,40 +17,39 @@ public class CatalogTesterClass {
     static void setUpBeforeClass() {
         catalog = new SuperMarketCatalog();
         checkout = new Checkout(catalog);
-        catalog.addProduct("Apple", 1.0);
-        catalog.addProduct("Banana", 2.0);
-        catalog.addProduct("Cherry", 0.5);
-
+//        catalog.addProduct("Apple", 1.0);
+//        catalog.addProduct("Banana", 2.0);
+//        catalog.addProduct("Cherry", 0.5);
     }
 
     @Test
-    void testAddProduct() {
+    void AddProduct3Test() {
         checkout.addProduct("Apple", 1);
-        assertEquals(1, checkout.getTotalItems());
+        checkout.addProduct("Banana", 1);
+        checkout.addProduct("Cherry", 1);
+        assertEquals(3.5, checkout.getTotalPrice(), 0.0);
     }
 
     @Test
-    void testRemoveProduct() {
+    void EmptyCartTest() {
+        assertEquals(0, checkout.getTotalItems());
+    }
+
+    @Test
+    void AddRemoveTest() {
         checkout.addProduct("Apple", 1);
         checkout.removeProduct("Apple");
         assertEquals(0, checkout.getTotalItems());
     }
 
     @Test
-    void testChangeQuantity() {
-        checkout.addProduct("Apple", 1);
-        checkout.changeQuantity("Apple", 2);
-        assertEquals(2, checkout.getQuantity("Apple"));
+    void AddTwoProdsTest() {
+        checkout.addProduct("Apple", 2);
+        assertEquals(2, checkout.getTotalItems());
     }
 
     @Test
-    void testChangePrice() {
-        checkout.changePrice("Apple", 2.0);
-        assertEquals(2.0, catalog.getPrice("Apple"), 0.0);
-    }
-
-    @Test
-    void testSetDiscount() {
+    void SetDiscountTest() {
         checkout.addProduct("Apple", 1);
         checkout.addProduct("Banana", 1);
         checkout.addProduct("Cherry", 1);
@@ -59,47 +58,18 @@ public class CatalogTesterClass {
         assertEquals(expectedTotal, checkout.getTotalPrice(), 0.0);
     }
 
+    //Test, change twice amount of product and check if quantity is correct
     @Test
-    void testGetTotalPrice() {
+    void ChangeQuantityTest() {
         checkout.addProduct("Apple", 1);
-        checkout.addProduct("Banana", 1);
-        checkout.addProduct("Cherry", 1);
-        assertEquals(3.5, checkout.getTotalPrice(), 0.0);
+        checkout.changeQuantity("Apple", 2);
+        checkout.changeQuantity("Apple", 4);
+        assertEquals(4, checkout.getQuantity("Apple"));
     }
 
+    //Test, give 0 for a product that does not exist
     @Test
-    void testGetTotalItems() {
-        checkout.addProduct("Apple", 1);
-        checkout.addProduct("Banana", 1);
-        checkout.addProduct("Cherry", 1);
-        assertEquals(3, checkout.getTotalItems());
-    }
-
-    @Test
-    void testGetQuantity() {
-        checkout.addProduct("Apple", 1);
-        checkout.addProduct("Banana", 1);
-        checkout.addProduct("Cherry", 1);
-        assertEquals(1, checkout.getQuantity("Apple"));
-    }
-
-    @Test
-    void testGetPrice() {
-        checkout.addProduct("Apple", 1);
-        checkout.addProduct("Banana", 1);
-        checkout.addProduct("Cherry", 1);
-        assertEquals(1.0, catalog.getPrice("Apple"), 0.0);
-    }
-
-    @Test
-    void testAddProductToCatalog() {
-        catalog.addProduct("Apple", 1.0);
-        assertEquals(1.0, catalog.getPrice("Apple"), 0.0);
-    }
-
-    @Test
-    void testGetPriceFromCatalog() {
-        catalog.addProduct("Apple", 1.0);
-        assertEquals(1.0, catalog.getPrice("Apple"), 0.0);
+    void DoesNotExistTest() {
+        assertEquals(0, checkout.getQuantity("Orange"));
     }
 }

@@ -10,6 +10,9 @@ public class SuperMarketCatalog {
     }
 
     public double getPrice(String name) {
-        return catalog.get(name);
+        if (!catalog.containsKey(name))
+            return 0;
+        else
+            return catalog.get(name);
     }
 }
